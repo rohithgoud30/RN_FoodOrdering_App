@@ -1,16 +1,5 @@
-import { StyleSheet, ScrollView } from 'react-native'
-import products from '../../../assets/data/products'
-import ProductListItem from '@/components/ProductListItem'
+import { Redirect } from 'expo-router'
 
-const product = products
-
-export default function MenuScreen() {
-  return (
-    <ScrollView>
-      <ProductListItem product={product[5]} />
-      <ProductListItem product={product[1]} />
-    </ScrollView>
-  )
+export default function TabIndex() {
+  return <Redirect href={'/menu/'} />
 }
-
-const styles = StyleSheet.create({})
