@@ -1,16 +1,21 @@
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams, router } from 'expo-router'
 import { Image, StyleSheet, Text, View, Pressable } from 'react-native'
 import products from '@/assets/data/products'
 import { useState } from 'react'
 import Button from '../../../components/Button'
+import { PizzaSize } from '@/assets/types'
+import { useCart } from '@/providers/CartProvider'
 
-const sizes = ['S', 'M', 'L', 'XL']
+const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams()
-  const [selectedSize, setSelectedSize] = useState<string>('M')
+  const [selectedSize, setSelectedSize] = useState<PizzaSize>('M')
 
-  const product = products.find((product) => product.id.toString() === id)
+  const { addItem } = useCart()
+
+  const product = products.find((p) => p.id.toString() === id)
+
   const defaultPizzaImage =
     'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
@@ -21,6 +26,12 @@ const ProductDetailsScreen = () => {
         <Text>Product Not Found</Text>
       </View>
     )
+  }
+
+  const handleAddToCart = () => {
+    if (!product) return
+    addItem(product, selectedSize)
+    router.push('/cart')
   }
 
   return (
@@ -41,9 +52,9 @@ const ProductDetailsScreen = () => {
                 backgroundColor: selectedSize === size ? 'gainsboro' : 'white',
               },
             ]}
+            key={size}
           >
             <Text
-              key={size}
               style={[
                 styles.sizeText,
                 {
@@ -57,7 +68,7 @@ const ProductDetailsScreen = () => {
         ))}
       </View>
       <Text style={styles.price}>${product.price}</Text>
-      <Button text='Add to Cart' />
+      <Button onPress={() => handleAddToCart()} text='Add to Cart' />
     </View>
   )
 }
@@ -97,5 +108,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     marginTop: 'auto',
+    padding: 5,
   },
 })

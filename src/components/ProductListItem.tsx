@@ -1,7 +1,9 @@
 import { StyleSheet, Text, Image, Pressable } from 'react-native'
 import Colors from '@/constants/Colors'
 import { Product } from '@/assets/types'
-import { router } from 'expo-router'
+import { router, useSegments } from 'expo-router'
+
+type RelativePathString = `./${string}` | `../${string}` | '..'
 
 type ProductListItemProps = {
   product: Product
@@ -10,9 +12,17 @@ type ProductListItemProps = {
 const ProductListItem = ({ product }: ProductListItemProps) => {
   const defaultPizzaImage =
     'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
+  const segments = useSegments()
+  console.log({ segments })
   return (
     <Pressable
-      onPress={() => router.push(`/menu/${product.id}`)}
+      onPress={() =>
+        router.push(
+          `${segments[0] ? '/' + segments[0] : ''}/menu/${
+            product.id
+          }` as RelativePathString
+        )
+      }
       style={styles.container}
     >
       <Image
@@ -21,7 +31,7 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
         resizeMode='contain'
       />
       <Text style={styles.title}>{product.name}</Text>
-      <Text style={styles.price}>{product.price}</Text>
+      <Text style={styles.price}>${product.price}</Text>
     </Pressable>
   )
 }
