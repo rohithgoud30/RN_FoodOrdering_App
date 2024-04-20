@@ -10,9 +10,6 @@ const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams()
-  const [selectedSize, setSelectedSize] = useState<PizzaSize>('M')
-
-  const { addItem } = useCart()
 
   const product = products.find((p) => p.id.toString() === id)
 
@@ -28,12 +25,6 @@ const ProductDetailsScreen = () => {
     )
   }
 
-  const handleAddToCart = () => {
-    if (!product) return
-    addItem(product, selectedSize)
-    router.push('/cart')
-  }
-
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product.name }} />
@@ -41,34 +32,8 @@ const ProductDetailsScreen = () => {
         source={{ uri: product.image || defaultPizzaImage }}
         style={styles.image}
       />
-      <Text style={styles.subtitle}>Select Size</Text>
-      <View style={styles.sizes}>
-        {sizes.map((size) => (
-          <Pressable
-            onPress={() => setSelectedSize(size)}
-            style={[
-              styles.size,
-              {
-                backgroundColor: selectedSize === size ? 'gainsboro' : 'white',
-              },
-            ]}
-            key={size}
-          >
-            <Text
-              style={[
-                styles.sizeText,
-                {
-                  color: selectedSize !== size ? 'gray' : 'black',
-                },
-              ]}
-            >
-              {size}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
+      <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
-      <Button onPress={() => handleAddToCart()} text='Add to Cart' />
     </View>
   )
 }
@@ -79,35 +44,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  subtitle: {
-    padding: 5,
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   image: {
     width: '100%',
     aspectRatio: 1,
     alignSelf: 'center',
   },
-  sizeText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  sizes: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-  },
-  size: {
-    backgroundColor: 'gainsboro',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 50,
-  },
   price: {
     fontSize: 20,
     fontWeight: '600',
-    marginTop: 'auto',
     padding: 5,
   },
 })
