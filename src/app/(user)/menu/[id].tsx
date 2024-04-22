@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Button from '../../../components/Button'
 import { PizzaSize } from '@/assets/types'
 import { useCart } from '@/providers/CartProvider'
+import { defaultPizzaImage } from '@/components/ProductListItem'
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
@@ -15,9 +16,6 @@ const ProductDetailsScreen = () => {
   const { addItem } = useCart()
 
   const product = products.find((p) => p.id.toString() === id)
-
-  const defaultPizzaImage =
-    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
   if (!product) {
     return (

@@ -12,7 +12,7 @@ const MenuStack = () => {
         options={{
           title: 'Menu',
           headerRight: () => (
-            <Pressable onPress={() => router.push('/')}>
+            <Pressable onPress={() => router.push('/(admin)/menu/create')}>
               {({ pressed }) => (
                 <FontAwesome
                   name='plus-square-o'

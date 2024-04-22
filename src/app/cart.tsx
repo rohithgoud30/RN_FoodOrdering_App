@@ -5,7 +5,7 @@ import CartListItem from '@/components/CartListItem'
 import Button from '@/components/Button'
 
 export default function CartScreen() {
-  const { items, addItem, total } = useCart()
+  const { items, total } = useCart()
   return (
     <View style={[styles.container, { padding: 10 }]}>
       <FlatList
